@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+echo "ES"
+vagrant ssh storage -c 'sudo service elasticsearch status'
+vagrant ssh storage -c 'sudo service elasticsearch start'
+
+echo "Redis"
+vagrant ssh storage -c 'sudo service redis-server status'
+vagrant ssh storage -c 'sudo service redis-server start'
+
+echo "RabbitMQ"
+vagrant ssh storage -c 'sudo service rabbitmq-server status'
+vagrant ssh storage -c 'sudo service rabbitmq-server start'
+
+# echo "MySQL"
+# vagrant ssh storage -c 'sudo service mysql status'
+# vagrant ssh storage -c 'sudo service mysql start'
