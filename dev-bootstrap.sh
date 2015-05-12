@@ -48,16 +48,16 @@ _q update-alternatives --set ruby /usr/bin/ruby2.2
 
 _q gem install bundler pry rake --no-rdoc --no-ri
 
-# install java
+# install java (manually)
 
-_q apt-get install openjdk-7-jdk
+#_q apt-get install openjdk-7-jdk
 
-# install leiningen
+# install leiningen (also manually)
 
-mkdir /home/vagrant/bin
-wget -O /home/vagrant/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
-chmod +x /home/vagrant/bin/lein
-echo "export PATH=/home/vagrant/bin/:$PATH" >> /home/vagrant/.bashrc
+#mkdir /home/vagrant/bin
+#wget -O /home/vagrant/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
+#chmod +x /home/vagrant/bin/lein
+#echo "export PATH=/home/vagrant/bin/:$PATH" >> /home/vagrant/.bashrc
 
 
 
