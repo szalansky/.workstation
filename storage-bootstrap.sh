@@ -95,3 +95,5 @@ service rabbitmq-server status || service rabbitmq-server start
 # apt-get update
 # apt-get install mysql-server
 # GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root';
+# copy scripts/my.cnf to /etc/mysql/my.cnf on storage box
+# sudo service mysql restart
