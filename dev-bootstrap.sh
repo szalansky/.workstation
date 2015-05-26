@@ -28,6 +28,7 @@ _q apt-get -y -q install build-essential \
   python-software-properties \
   python2.7 \
   python2.7-dev \
+  silversearcher-ag \
   tmux \
   tree \
   unzip
