@@ -23,6 +23,7 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
   end
 
   config.vm.define 'storage' do |storage|
+    storage.vm.synced_folder 'bridge', '/home/vagrant/bridge'
     storage.vm.hostname = 'storage'
     storage.vm.network 'private_network', ip: '192.168.11.33'
     storage.vm.provision 'shell', path: 'storage-bootstrap.sh'

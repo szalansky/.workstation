@@ -60,7 +60,13 @@ _q gem install bundler pry rake --no-rdoc --no-ri
 #chmod +x /home/vagrant/bin/lein
 #echo "export PATH=/home/vagrant/bin/:$PATH" >> /home/vagrant/.bashrc
 
+# install git
 
+_q add-apt-repository ppa:git-core/ppa -y
+
+_q apt-get update -q
+
+_q apt-get install git
 
 # install docker
 
