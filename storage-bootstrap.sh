@@ -12,7 +12,7 @@ else
   curl https://packages.elasticsearch.org/GPG-KEY-elasticsearch > /tmp/es-key
   apt-key add /tmp/es-key
 
-  add-apt-repository "deb http://packages.elasticsearch.org/elasticsearch/1.4/debian stable main"
+  add-apt-repository "deb http://packages.elasticsearch.org/elasticsearch/1.7/debian stable main"
   apt-get update
 fi
 

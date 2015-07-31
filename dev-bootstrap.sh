@@ -43,7 +43,7 @@ _q apt-add-repository ppa:chris-lea/node.js
 
 _q apt-get update -q
 
-_q apt-get -y -q install ruby2.0 ruby2.0-dev ruby2.1 ruby2.1-dev ruby2.2  ruby2.2-dev nodejs golang
+_q apt-get -y -q install ruby2.2 ruby2.2-dev nodejs golang
 
 _q update-alternatives --set ruby /usr/bin/ruby2.2
 
