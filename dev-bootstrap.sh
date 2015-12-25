@@ -49,16 +49,18 @@ _q update-alternatives --set ruby /usr/bin/ruby2.2
 
 _q gem install bundler pry rake --no-rdoc --no-ri
 
-# install java (manually)
+# install java
 
-#_q apt-get install openjdk-7-jdk
+_q apt-add-repository ppa:openjdk-r/ppa
+_q apt-get update -q
+_q apt-get -y -q install openjdk-8-jdk openjdk-8-jre
 
-# install leiningen (also manually)
+# install leiningen
 
-#mkdir /home/vagrant/bin
-#wget -O /home/vagrant/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
-#chmod +x /home/vagrant/bin/lein
-#echo "export PATH=/home/vagrant/bin/:$PATH" >> /home/vagrant/.bashrc
+mkdir /home/vagrant/bin
+wget -O /home/vagrant/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
+chmod +x /home/vagrant/bin/lein
+echo "export PATH=/home/vagrant/bin/:$PATH" >> /home/vagrant/.bashrc
 
 # install git
 
@@ -66,7 +68,7 @@ _q add-apt-repository ppa:git-core/ppa -y
 
 _q apt-get update -q
 
-_q apt-get install git
+_q apt-get -y -q install git
 
 # install docker
 
