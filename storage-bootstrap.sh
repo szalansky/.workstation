@@ -1,13 +1,28 @@
 #!/usr/bin/env bash
 
-set -e
+if [[ -e /vagrant ]] ; then
+  echo "!!! Running in vagrant, no need for sudo su"
+else
+  echo  "!!! Running on real machine, forcing sudo mode"
+  sudo su
+fi
+
+log() {
+  logger -s -t PROVISIONER -- "$*" 2>&1
+}
 
 _q() {
+  log "> $*"
   $* > /dev/null
 }
 
+
+export DEBIAN_FRONTEND=noninteractive
+set -e
+
+
 if grep elasticsearch /etc/apt/sources.list; then
-  echo "ES installed"
+  log "ES installed"
 else
   curl https://packages.elasticsearch.org/GPG-KEY-elasticsearch > /tmp/es-key
   apt-key add /tmp/es-key
@@ -17,7 +32,7 @@ else
 fi
 
 if grep rabbitmq /etc/apt/sources.list ; then
-  echo 'Rabbit installed'
+  log 'Rabbit installed'
 else
   curl https://www.rabbitmq.com/rabbitmq-signing-key-public.asc > /tmp/rabbit-key
   apt-key add /tmp/rabbit-key
@@ -27,7 +42,7 @@ else
 fi
 
 if grep postgresql  /etc/apt/sources.list ; then
-  echo 'PG installed'
+  log 'PG installed'
 else
   curl https://www.postgresql.org/media/keys/ACCC4CF8.asc > /tmp/pg-key
   apt-key add /tmp/pg-key
@@ -36,20 +51,25 @@ else
   apt-get update
 fi
 
+# install java
+
+_q apt-add-repository ppa:openjdk-r/ppa
+_q apt-get update -q
+_q apt-get -y -q install openjdk-8-jdk openjdk-8-jre
+
 apt-get install -y -q  \
   ufw \
   htop \
   postgresql-9.4 \
   redis-server \
   redis-tools \
-  openjdk-7-jre-headless \
   elasticsearch \
   rabbitmq-server \
-  redis-server \
-  postgresql-contrib-9.4
+  postgresql-contrib-9.4 \
+  redis-server
 
 if test -e /usr/share/elasticsearch/plugins/kopf ; then
-  echo 'kopf already installed'
+  log 'kopf already installed'
 else
 
   cd /usr/share/
@@ -60,21 +80,19 @@ apt-get autoremove -y
 
 
 if grep '^listen_addresses = *' /etc/postgresql/9.4/main/postgresql.conf ; then
-  echo 'pg already set up'
+  log 'pg already set up'
 else
   sed -i -e "s/.*listen_addresses.*$/listen_addresses = '*'/" /etc/postgresql/9.4/main/postgresql.conf
   echo 'host    all             all             0.0.0.0/0              md5' >> /etc/postgresql/9.4/main/pg_hba.conf
 
-  echo "CREATE USER vagrant WITH CREATEUSER PASSWORD 'vagrant'; GRANT ALL PRIVILEGES ON DATABASE postgres TO vagrant;" > /vagrant/psql-user.sql
-  sudo su postgres -c 'psql < /vagrant/psql-user.sql'
+  sudo su postgres -c 'psql < /vagrant/script/user.sql'
   service postgresql restart || service postgresql start
-  rm /vagrant/psql-user.sql
 fi
 
 
 # configure rabbit mq
 if rabbitmqctl list_users | grep rabbit ; then
-  echo 'Rabbitmq is ready'
+  log 'Rabbitmq is ready'
 else
   rabbitmqctl add_vhost /main
   rabbitmqctl add_user rabbit rabbit
@@ -87,14 +105,9 @@ fi
 service postgresql status || service postgresql start
 service elasticsearch status || service elasticsearch start
 service redis-server status || service redis-server start
+
+export HOME=/home/root
 service rabbitmq-server status || service rabbitmq-server start
 
+log "Storage: done"
 
-# install it manually
-
-# apt-add-repository ppa:ondrej/mysql-5.6
-# apt-get update
-# apt-get install mysql-server
-# GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root';
-# copy scripts/my.cnf to /etc/mysql/my.cnf on storage box
-# sudo service mysql restart
