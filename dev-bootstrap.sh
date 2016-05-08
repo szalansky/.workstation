@@ -62,6 +62,13 @@ wget -O /home/vagrant/bin/lein https://raw.githubusercontent.com/technomancy/lei
 chmod +x /home/vagrant/bin/lein
 echo "export PATH=/home/vagrant/bin/:$PATH" >> /home/vagrant/.bashrc
 
+# install emacs
+_q apt-get -y -q install libncurses5-dev
+cd /tmp && wget http://ftp.gnu.org/gnu/emacs/emacs-24.5.tar.xz
+tar -xf emacs-24.5.tar.xz && cd emacs-24.5
+./configure --with-x-toolkit=no --with-xpm=no --with-jpeg=no --with-png=no --with-gif=no --with-tiff=no
+sudo make install
+
 # install git
 
 _q add-apt-repository ppa:git-core/ppa -y

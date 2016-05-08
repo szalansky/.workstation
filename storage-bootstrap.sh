@@ -79,13 +79,13 @@ fi
 apt-get autoremove -y
 
 
-if grep '^listen_addresses = *' /etc/postgresql/9.4/main/postgresql.conf ; then
+if grep '^listen_addresses = *' /etc/postgresql/9.5/main/postgresql.conf ; then
   log 'pg already set up'
 else
-  sed -i -e "s/.*listen_addresses.*$/listen_addresses = '*'/" /etc/postgresql/9.4/main/postgresql.conf
-  echo 'host    all             all             0.0.0.0/0              md5' >> /etc/postgresql/9.4/main/pg_hba.conf
+  sed -i -e "s/.*listen_addresses.*$/listen_addresses = '*'/" /etc/postgresql/9.5/main/postgresql.conf
+  echo 'host    all             all             0.0.0.0/0              md5' >> /etc/postgresql/9.5/main/pg_hba.conf
 
-  sudo su postgres -c 'psql < /vagrant/script/user.sql'
+  sudo su postgres -c 'psql < /vagrant/scripts/user.sql'
   service postgresql restart || service postgresql start
 fi
 
